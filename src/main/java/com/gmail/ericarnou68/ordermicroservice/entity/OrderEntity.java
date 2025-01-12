@@ -1,10 +1,6 @@
 package com.gmail.ericarnou68.ordermicroservice.entity;
 
 import com.gmail.ericarnou68.ordermicroservice.listener.OrderEventDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,10 +9,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.math.BigDecimal;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Document(collection = "tb_orders")
 public class OrderEntity {
 
@@ -31,8 +23,12 @@ public class OrderEntity {
 
     private List<OrderItem> orderitemsList;
 
+    public OrderEntity(){
+
+    }
+
     public OrderEntity(OrderEventDto orderEventDto) {
-        this.orderId = orderEventDto.codigoCliente();
+        this.orderId = orderEventDto.codigoPedido();
         this.customerId = orderEventDto.codigoCliente();
 
         this.orderitemsList = orderEventDto.itens().stream()
@@ -43,5 +39,17 @@ public class OrderEntity {
                 .map(i -> i.preco().multiply(BigDecimal.valueOf(i.quantidade())))
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
     }
 }
