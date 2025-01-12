@@ -1,5 +1,6 @@
 package com.gmail.ericarnou68.ordermicroservice.entity;
 
+import com.gmail.ericarnou68.ordermicroservice.listener.OrderItemEventDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,10 @@ public class OrderItem {
 
     @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal price;
+
+    public OrderItem(OrderItemEventDto orderItemEventDto) {
+        this.product = orderItemEventDto.produto();
+        this.price = orderItemEventDto.preco();
+        this.quantity = orderItemEventDto.quantidade();
+    }
 }

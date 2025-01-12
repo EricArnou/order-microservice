@@ -1,5 +1,6 @@
 package com.gmail.ericarnou68.ordermicroservice.entity;
 
+import com.gmail.ericarnou68.ordermicroservice.listener.OrderEventDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,18 @@ public class OrderEntity {
     private BigDecimal total;
 
     private List<OrderItem> orderitemsList;
+
+    public OrderEntity(OrderEventDto orderEventDto) {
+        this.orderId = orderEventDto.codigoCliente();
+        this.customerId = orderEventDto.codigoCliente();
+
+        this.orderitemsList = orderEventDto.itens().stream()
+                .map(OrderItem::new)
+                .toList();
+
+        this.total = orderEventDto.itens().stream()
+                .map(i -> i.preco().multiply(BigDecimal.valueOf(i.quantidade())))
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
+    }
 }
