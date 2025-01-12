@@ -1,4 +1,4 @@
-package com.gmail.ericarnou68.ordermicroservice.Entity;
+package com.gmail.ericarnou68.ordermicroservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
